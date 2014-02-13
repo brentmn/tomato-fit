@@ -2,6 +2,9 @@ node_modules
 dist
 .tmp
 .sass-cache
+.idea
 app/bower_components
 DS_Store
 app.scripts/conf.js
+conf.json
+api/golang/golang
