@@ -32,38 +32,56 @@
                         $log.log('get device alarms error', status, data);
                         return;
                     }
-                    pub.alarms = pub.alarms.concat(data.trackerAlarms);
+                    if (data && data.trackerAlarms && data.trackerAlarms.length) {
+                        pub.alarms = pub.alarms.concat(data.trackerAlarms);
+                        pub.alarm = pub.alarms[0];
+                        startAlarm(pub.alarm)
+                    }
                 });
             });
 
+        function startAlarm(trackerAlarm) {
+            var d = moment(trackerAlarm.time, 'HH:mmZ').toDate();
+            var d2 = new Date();
+
+            pub.counter = (d.getTime() - d2.getTime());
+
+            start();
+        }
+
         function start(kind) {
             clear();
-            pub.counter = pub.timers[kind];
+            if (kind) {
+                pub.counter = pub.timers[kind];
+            }
             var d = new Date();
             d.setSeconds(d.getSeconds() + (pub.counter / 1000));
             var alarm = {
                 deviceId: pub.device.id,
                 id: null,
-                time: moment(d).format('HH:mm:ssZ'),
+                time: moment(d).format('HH:mmZ'),
                 enabled: true,
                 recurring: false,
                 weekDays: [],
                 label: kind
             };
-            if (false) {
+            //if generate by the user
+            if (kind) {
                 fitbit.setAlarm(alarm).success(function (data, status) {
                     if (status !== 200) {
                         $log.log('set alarm error', alarm, status, data);
                         return;
                     }
-                    pub.alarm = data;
-                    pub.alarms.push(data);
+                    pub.alarm = data.trackerAlarm;
+                    pub.alarms.push(data.trackerAlarm);
                 });
             }
+
             pub.alarm = alarm;
             doCountdown();
         }
-        function doCountdown(){
+
+        function doCountdown() {
             pub.timer = $timeout(function () {
                 pub.counter = (pub.counter - 1000);
                 pub.countdown = moment(pub.alarm.time, 'HH:mm:ssZ').fromNow(true);

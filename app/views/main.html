@@ -31,7 +31,7 @@
         <div ng-show="pomodoro.alarms.length">
             <h3>device alarms:</h3>
             <ul>
-                <li ng-repeat="a in pomodoro.alarms | filter:valid">{{ a.label }} - {{ a.time }} - <a
+                <li ng-repeat="a in pomodoro.alarms | filter:filterAlarms">{{ a.label }} - {{ a.time }} - <a
                         ng-click="pomodoro.remove(a)" ng-href="#">X</a></li>
             </ul>
         </div>
