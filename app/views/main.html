@@ -1,0 +1,42 @@
+<div class="header">
+    <h3 class="text-muted">tomato-fit</h3>
+</div>
+
+<div class="jumbotron">
+    <h3>pomodoro timer integrated with fitbit.</h3>
+
+    <div ng-show="!authorized">
+        <p class="lead" ng-show="!authorized">
+            <a ng-href="{{authUrl}}">authorize your fitbit</a>
+        </p>
+    </div>
+    <div ng-show="authorized">
+        <p>
+            <select ng-model="pomodoro.device.id">
+                <option ng-repeat="d in pomodoro.devices" value="{{d.id}}">{{d.deviceVersion}}</option>
+            </select>
+        </p>
+        <p>
+            <a ng-click="pomodoro.start('pomodoro')" class="btn btn-lg" ng-href="#" title="25 minutes">pomodoro</a>
+            <a ng-click="pomodoro.start('short')" class="btn btn-lg" ng-href="#" title="5 minutes">short break</a>
+            <a ng-click="pomodoro.start('long')" class="btn btn-lg" ng-href="#" title="10 minutes">long break</a>
+        </p>
+        <p>
+            <span ng-bind="pomodoro.counter | date:'mm:ss'"></span>
+        </p>
+        <p ng-show="false">
+            <a ng-click="start()" class="btn btn-lg" ng-href="#" title="start">start</a>
+            <a ng-click="pause()" class="btn btn-lg" ng-href="#" title="stop">pause</a>
+        </p>
+        <div ng-show="pomodoro.alarms.length">
+            <h3>device alarms:</h3>
+            <ul>
+                <li ng-repeat="a in pomodoro.alarms | filter:valid">{{ a.label }} - {{ a.time }} - <a
+                        ng-click="pomodoro.remove(a)" ng-href="#">X</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div class="footer">
+</div>
