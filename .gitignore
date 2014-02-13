@@ -4,7 +4,7 @@ dist
 .sass-cache
 .idea
 app/bower_components
-DS_Store
+.DS_Store
 app.scripts/conf.js
 conf.json
 api/golang/golang
